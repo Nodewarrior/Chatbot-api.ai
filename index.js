@@ -6,7 +6,10 @@ const request = require('request')
 
 cont app = express();
 
-app.set('port', (process.env.PORT || 5000))
+const port = process.env.PORT || 8000
+/*app.listen(port, function() {
+	console.log("App is running on port " + port)
+}) */
 
 //Allows to process data
 app.use(bodyParser.urlencoded({extended: false}))
@@ -26,6 +29,6 @@ app.get('/webhook/', function(req, res) {
 	res.send("Wrong token")
 })
 
-app.listen(app.get('port'), function(){
-	console.log("running: port")
+app.listen(port, function() {
+	console.log("running: port" + port)
 })
