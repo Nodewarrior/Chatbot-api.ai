@@ -107,7 +107,30 @@ function sendMessage(event) {
   apiai.end();
 }
 
+/*Using Open Weather API to fetch*/
+app.post('/ai', (req, res) => {
+	if(req.body.result.action === 'weather') {
+		let city = req.body.result.parameters['geo-city']
+    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID='+"2e9d0c714b965b945a0919c27ec53a1f"+'&q='+city;
 
+
+     request.get(restUrl, (err, response, body) => {
+      if (!err && response.statusCode == 200) {
+        let json = JSON.parse(body);
+       json.weather[0].description + ' and the temperature is ' + json.main.temp + ' ℉';
+        return res.json({
+          speech: msg,
+          displayText: msg,
+          source: 'weather'});
+      } else {
+        return res.status(400).json({
+          status: {
+            code: 400,
+            errorType: 'I failed to look up the city name.'}});
+      }})
+  }
+    	}
+})
 
 
 
