@@ -7,7 +7,7 @@ const request = require('request')
 const app = express();
 
 const apiai = require('apiai')
-const apiaiApp = apiai(APIAI_TOKEN)
+const apiaiApp = apiai("3684e97646f74d3190aef6ff0e8edefc")
 
 
 
@@ -70,7 +70,7 @@ app.post('/webhook/', function(req, res) {
 
 function sendText(sender, text) {
 	let apiai = apiaiApp.textRequest(text, {
-		sessionId: 'tabby_cat'
+		sessionId: 'sillyman'
 	})
 
 	apiai.on('response', (response) => {
