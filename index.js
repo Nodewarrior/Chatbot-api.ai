@@ -1,15 +1,12 @@
 'use strict'
 
-const express = require('express');
+const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 
 const app = express();
 
-const port = process.env.PORT || 8000
-/*app.listen(port, function() {
-	console.log("App is running on port " + port)
-}) */
+app.set('port', (process.env.PORT || 5000))
 
 //Allows to process data
 app.use(bodyParser.urlencoded({extended: false}))
@@ -51,7 +48,7 @@ function sendText(sender, text) {
 		method: "POST",
 		json: {
 			receipient: {id: sender},
-			message: messageData,
+			message: messageData
 		}
 	}, function(error, response, body) {
 		if(error) {
@@ -62,6 +59,6 @@ function sendText(sender, text) {
 	})
 }
 
-app.listen(port, function() {
-	console.log("running: port" + port)
+app.listen(app.get('port'), function() {
+	console.log("running: port")
 })
