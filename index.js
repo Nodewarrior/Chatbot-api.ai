@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
+const 
 
 const app = express();
 
@@ -35,17 +36,17 @@ app.get('/webhook/', function(req, res) {
 
 /*Handling messages*/
 app.post('/webhook/', function(req, res) {
-	let messaging_events = req.body.entry[0].messaging
-	for (let i = 0; i < messaging_events.length; i++) {
-		let event = messaging_events[i]
-		let sender = event.sender.id
-		if (event.message && event.message.text) {
-			let text = event.message.text
-		//sendText(sender, "Text echo: " + text.substring(0,100))
-		sendText(event, text)
-	}
-  }
+	let messagingEvents = req.body
+	if(messagingEvents.object === 'page') {
+		messagingEvents.entry.forEach((entry) => {
+			entry.messaging.forEach((event) => {
+				if(event.message && event.message.text) {
+					sendText(event)
+				}
+			})
+		})
   res.sendStatus(200)
+	}
 })
 
 /*function sendText(sender, text) {
@@ -68,7 +69,11 @@ app.post('/webhook/', function(req, res) {
 }
 */
 
-function sendText(sender, text) {
+function sendText(event) {
+	let sender = event.sender.id
+	let text = event.message.text
+
+
 	let apiai = apiaiApp.textRequest(text, {
 		sessionId: 'sillyman'
 	})
@@ -91,7 +96,7 @@ function sendText(sender, text) {
 		} else if(response.body.error) {
 			console.log("response body error")
 		}
-	}
+	})
 	})
 
 		apiai.on('error', (error) => {
